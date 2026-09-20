@@ -6465,3 +6465,75 @@ COMMIT;
 -- Legacy OTPs are intentionally excluded: they are expired authentication secrets.
 -- Legacy users, results, attempts, and progress are preserved in legacy_import.
 -- After a user signs in, verify their row: SELECT * FROM legacy_import.users WHERE auth_user_id IS NOT NULL;
+
+
+-- =====================================================
+-- Admin Allowlist System
+-- =====================================================
+-- Creates a secure admin allowlist table that controls
+-- which email addresses can access admin features.
+-- Admins must be both:
+--   1. Listed in admin_allowlist with enabled=true
+--   2. Have profiles.role = 'admin'
+-- =====================================================
+
+-- Create admin allowlist table
+CREATE TABLE IF NOT EXISTS public.admin_allowlist (
+  email text PRIMARY KEY,
+  enabled boolean NOT NULL DEFAULT true,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+
+-- Add RLS to admin_allowlist
+ALTER TABLE public.admin_allowlist ENABLE ROW LEVEL SECURITY;
+
+-- Revoke all access by default
+REVOKE ALL ON public.admin_allowlist FROM public, anon, authenticated;
+
+-- Drop the old is_admin function if it exists
+DROP FUNCTION IF EXISTS public.is_admin();
+
+-- Create improved function to check if current user is an admin
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS boolean
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = ''
+AS $$
+  SELECT EXISTS (
+    SELECT 1
+    FROM public.profiles p
+    JOIN auth.users u ON u.id = p.id
+    JOIN public.admin_allowlist a
+      ON lower(trim(a.email)) = lower(trim(u.email))
+     AND a.enabled = true
+    WHERE p.id = auth.uid()
+      AND p.role = 'admin'
+  );
+$$;
+
+-- Grant execute permission on is_admin function
+REVOKE ALL ON FUNCTION public.is_admin() FROM public, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.is_admin() TO anon, authenticated;
+
+-- Add comment for documentation
+COMMENT ON TABLE public.admin_allowlist IS 'Controls which email addresses are authorized for admin access. Users must also have role=admin in profiles table.';
+COMMENT ON FUNCTION public.is_admin() IS 'Returns true if the current user is both in the admin allowlist and has admin role in profiles.';
+
+-- =====================================================
+-- How to add an admin:
+-- =====================================================
+-- 1. Add email to allowlist:
+--    INSERT INTO public.admin_allowlist (email)
+--    VALUES ('admin@example.com')
+--    ON CONFLICT (email) DO UPDATE SET enabled = true;
+--
+-- 2. Grant admin role (after they create an account):
+--    UPDATE public.profiles p
+--    SET role = 'admin'
+--    FROM auth.users u
+--    WHERE p.id = u.id
+--      AND lower(u.email) = lower('admin@example.com');
+-- =====================================================

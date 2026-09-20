@@ -21,7 +21,34 @@ export async function requireUser(returnTo = "/dashboard") {
   return { db, user: data.user, profile: profile as Profile };
 }
 export async function requireAdmin() {
-  const session = await requireUser("/admin");
-  if (session.profile.role !== "admin") redirect("/dashboard");
-  return session;
+  const loginUrl = "/admin-login";
+  if (!isConfigured()) redirect(loginUrl);
+
+  const db = await supabaseServer();
+  const { data, error } = await db.auth.getUser();
+
+  if (error || !data.user) redirect(loginUrl);
+
+  const { data: profile, error: profileError } = await db
+    .from("profiles")
+    .select("*")
+    .eq("id", data.user.id)
+    .single();
+
+  if (profileError) {
+    throw new Error(
+      "Your profile could not be loaded. Please contact support.",
+    );
+  }
+
+  // Check if user is in admin allowlist and has admin role
+  const { data: isAdmin, error: adminCheckError } = await db.rpc("is_admin");
+
+  if (adminCheckError || !isAdmin) {
+    // Sign out unauthorized user and redirect
+    await db.auth.signOut();
+    redirect(`${loginUrl}?error=unauthorized`);
+  }
+
+  return { db, user: data.user, profile: profile as Profile };
 }
