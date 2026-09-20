@@ -8,6 +8,7 @@ import { verifyAdminEmail } from "@/app/admin-login/actions";
 
 export function AdminAuthForm() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const search = useSearchParams();
@@ -20,7 +21,7 @@ export function AdminAuthForm() {
     setError("");
 
     try {
-      const result = await verifyAdminEmail(email);
+      const result = await verifyAdminEmail(email, password);
 
       if (result?.error) {
         setError(result.error);
@@ -39,7 +40,7 @@ export function AdminAuthForm() {
     <div className="auth-card">
       <span className="eyebrow">ADMIN ACCESS</span>
       <h1>Administrator Login</h1>
-      <p>Enter your approved email. If you are not signed in, we’ll ask you to sign in before checking admin access.</p>
+      <p>Sign in here with your approved admin email and password.</p>
       {!configured && (
         <div className="notice">
           Admin login will be available once the site’s Supabase connection is
@@ -69,6 +70,10 @@ export function AdminAuthForm() {
             />
           </span>
         </label>
+        <label>
+          Password
+          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required maxLength={72} disabled={busy} />
+        </label>
         {error && (
           <p className="error-message" role="alert">
             {error}
@@ -80,7 +85,7 @@ export function AdminAuthForm() {
         </button>
       </form>
       <p className="auth-switch">
-        <a href="/login?next=%2Fadmin">Sign in with your admin account</a>
+        <a href="/forgot-password">Request password help</a> · <a href="/login">Student login</a>
       </p>
     </div>
   );

@@ -29,6 +29,7 @@ export default async function AdminLayout({
           ["/admin/assign-test", "Assignments"],
           ["/admin/exams", "Exams"],
           ["/admin/bundles", "Bundles"],
+          ["/admin/password-requests", "Password requests"],
         ].map(([url, label]) => (
           <Link key={url} href={url}>
             {label}

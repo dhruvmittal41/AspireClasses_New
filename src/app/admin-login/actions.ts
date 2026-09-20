@@ -2,16 +2,22 @@
 
 import { supabaseServer } from "@/lib/supabase/server";
 
-export async function verifyAdminEmail(email: string) {
+export async function verifyAdminEmail(email: string, password: string) {
   if (typeof email !== "string" || email.length > 254)
     return { error: "Enter a valid email address." };
   const trimmedEmail = email.trim().toLowerCase();
+  if (typeof password !== "string" || !password || password.length > 72)
+    return { error: "Enter your admin password." };
 
   // Check if email is in admin allowlist
   const db = await supabaseServer();
+  const { error: loginError } = await db.auth.signInWithPassword({ email: trimmedEmail, password });
+  if (loginError)
+    return { error: loginError.code === "email_not_confirmed"
+      ? "This account needs activation. Ask the site owner to activate your admin account in Supabase."
+      : "Unable to sign in. Check your email and password." };
   const { data: session, error: sessionError } = await db.auth.getUser();
-  if (sessionError || !session.user)
-    return { next: "/login?next=%2Fadmin" };
+  if (sessionError || !session.user) return { error: "Sign-in failed. Please try again." };
   if (session.user.email?.trim().toLowerCase() !== trimmedEmail)
     return { error: "Use the email of your signed-in account, or sign in with your admin account first." };
   const { data: allowlistCheck, error } = await db.rpc("is_admin");

@@ -15,7 +15,7 @@ function authMessage(message: string) {
   if (normalized.includes("invalid login credentials"))
     return "The email or password is incorrect.";
   if (normalized.includes("email not confirmed"))
-    return "Confirm your email using the link we sent, then try again.";
+    return "Your account needs activation. Please contact Aspire support.";
   if (normalized.includes("user already registered"))
     return "An account already exists for this email. Try logging in instead.";
   if (normalized.includes("password should be at least"))
@@ -108,7 +108,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
           router.refresh();
         } else
           setMessage(
-            "Account created. Check your email to confirm it, then log in with your password.",
+            "Your account could not be signed in automatically. Please contact Aspire support to activate it.",
           );
       } else {
         const { error: loginError } = await db.auth.signInWithPassword({

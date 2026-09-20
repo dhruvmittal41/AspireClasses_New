@@ -1,5 +1,7 @@
 # Admin access repair
 
+**Updated setup:** Follow [NO_EMAIL_AUTH_SETUP.md](NO_EMAIL_AUTH_SETUP.md) for the current flow. Admins now sign in directly with email/password; allowlist entries must be bound to an approved user UUID. Email confirmation is disabled for student signup, and password requests are reviewed in the admin panel. The older instructions below describe the preceding migration only.
+
 Run `supabase/migrations/202609210001_admin_session_repair.sql` in the Supabase SQL Editor after your existing schema/import. Do not rerun the older admin scripts: they drop the allowlist or its dependent policies. The repair preserves existing emails, closes public access to the list, and restores the original admin policies.
 
 Create and confirm the admin's Supabase account using the usual registration flow, then add the email in the SQL Editor:

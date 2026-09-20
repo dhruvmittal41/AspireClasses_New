@@ -7,6 +7,7 @@ import { isConfigured } from "@/lib/supabase/config";
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -15,20 +16,14 @@ export function ForgotPasswordForm() {
     setBusy(true);
     setError("");
     try {
-      const { error: resetError } =
-        await supabaseBrowser().auth.resetPasswordForEmail(
-          email.trim().toLowerCase(),
-          {
-            redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
-          },
-        );
+      const { error: resetError } = await supabaseBrowser().rpc("request_password_help", {
+        p_email: email.trim().toLowerCase(), p_contact: contact.trim(),
+      });
       if (resetError) throw resetError;
       setSent(true);
-    } catch (caught) {
+    } catch {
       setError(
-        caught instanceof Error
-          ? caught.message
-          : "Could not send the reset email.",
+        "Could not submit your request. Please try again or contact Aspire support.",
       );
     } finally {
       setBusy(false);
@@ -37,11 +32,11 @@ export function ForgotPasswordForm() {
   return (
     <div className="auth-card">
       <span className="eyebrow">A FRESH START</span>
-      <h1>Reset your password.</h1>
+      <h1>Request password help.</h1>
       <p>
         {sent
-          ? "If an account uses this email, we’ve sent a secure reset link."
-          : "Enter your email and we’ll send a secure reset link."}
+          ? "Your request has been received. Aspire staff will review it and contact you. Your password has not changed."
+          : "Enter your account email and a phone number where Aspire staff can contact you. No email code is needed."}
       </p>
       {error && (
         <p role="alert" className="error-message">
@@ -58,11 +53,16 @@ export function ForgotPasswordForm() {
               onChange={(event) => setEmail(event.target.value)}
               autoComplete="email"
               required
+              maxLength={254}
               disabled={busy || !isConfigured()}
             />
           </label>
+          <label>
+            Student or parent phone number
+            <input type="tel" value={contact} onChange={(event) => setContact(event.target.value)} autoComplete="tel" required minLength={7} maxLength={40} disabled={busy} />
+          </label>
           <button className="button full" disabled={busy || !isConfigured()}>
-            {busy ? "Sending…" : "Send reset link"}
+            {busy ? "Submitting…" : "Request help from admin"}
             <Mail size={18} />
           </button>
         </form>
