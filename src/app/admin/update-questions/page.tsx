@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { AdminForm } from "@/components/admin-form";
 import type { Question } from "@/lib/types";
 type AdminQuestion = Question & { correct_option: string; test_id: number };

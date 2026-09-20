@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { Brand } from "@/components/brand";
 export const metadata = {
   title: "Admin workspace",

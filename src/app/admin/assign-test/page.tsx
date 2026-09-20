@@ -1,4 +1,4 @@
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { AdminForm } from "@/components/admin-form";
 export default async function Assign() {
   const { db } = await requireAdmin();

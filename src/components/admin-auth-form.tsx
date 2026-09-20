@@ -1,77 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, Mail } from "lucide-react";
-import { supabaseBrowser } from "@/lib/supabase/browser";
 import { isConfigured } from "@/lib/supabase/config";
-
-function authMessage(message: string) {
-  const normalized = message.toLowerCase();
-  if (normalized.includes("email not confirmed"))
-    return "Please confirm your email first, then try again.";
-  if (normalized.includes("email rate limit"))
-    return "Too many attempts. Please wait a few minutes and try again.";
-  return message || "Something went wrong. Please try again.";
-}
+import { verifyAdminEmail } from "@/app/admin-login/actions";
 
 export function AdminAuthForm() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
-  const router = useRouter();
   const search = useSearchParams();
   const configured = isConfigured();
-  const googleEnabled = process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED === "true";
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
     setError("");
-    setMessage("");
 
     try {
-      const db = supabaseBrowser();
-      const trimmedEmail = email.trim().toLowerCase();
+      const result = await verifyAdminEmail(email);
 
-      // Send magic link (OTP) - the server will verify admin status on callback
-      const { error: otpError } = await db.auth.signInWithOtp({
-        email: trimmedEmail,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/admin")}&admin=true`,
-        },
-      });
-
-      if (otpError) throw otpError;
-
-      setMessage(
-        "Magic link sent! Check your email and click the link to sign in as admin.",
-      );
+      if (result?.error) {
+        setError(result.error);
+      }
+      // If no error, the server action will redirect to /admin
     } catch (caught) {
-      setError(
-        authMessage(
-          caught instanceof Error ? caught.message : "Please try again.",
-        ),
-      );
+      setError(caught instanceof Error ? caught.message : "Please try again.");
     } finally {
-      setBusy(false);
-    }
-  }
-
-  async function google() {
-    setBusy(true);
-    setError("");
-    const { error: googleError } = await supabaseBrowser().auth.signInWithOAuth(
-      {
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent("/admin")}&admin=true`,
-        },
-      },
-    );
-    if (googleError) {
-      setError(authMessage(googleError.message));
       setBusy(false);
     }
   }
@@ -80,7 +36,7 @@ export function AdminAuthForm() {
     <div className="auth-card">
       <span className="eyebrow">ADMIN ACCESS</span>
       <h1>Administrator Login</h1>
-      <p>Enter your authorized admin email to receive a secure login link.</p>
+      <p>Enter your authorized admin email to access the admin dashboard.</p>
       {!configured && (
         <div className="notice">
           Admin login will be available once the site's Supabase connection is
@@ -89,18 +45,7 @@ export function AdminAuthForm() {
       )}
       {search.get("error") === "unauthorized" && (
         <p role="alert" className="error-message">
-          Your account is not authorized for admin access. Contact an
-          administrator if you believe this is an error.
-        </p>
-      )}
-      {search.get("error") === "callback" && (
-        <p role="alert" className="error-message">
-          Sign-in could not be completed. Please try again.
-        </p>
-      )}
-      {message && (
-        <p role="status" className="success-message notice">
-          {message}
+          Your session expired or you don't have admin access.
         </p>
       )}
       <form onSubmit={submit}>
@@ -127,25 +72,10 @@ export function AdminAuthForm() {
           </p>
         )}
         <button className="button full" disabled={busy || !configured}>
-          {busy ? "Sending magic link…" : "Send magic link"}
+          {busy ? "Verifying…" : "Access Admin Dashboard"}
           <ArrowRight size={18} />
         </button>
       </form>
-      {googleEnabled && (
-        <>
-          <div className="auth-divider">
-            <span>or</span>
-          </div>
-          <button
-            type="button"
-            disabled={busy || !configured}
-            className="button secondary full"
-            onClick={google}
-          >
-            Continue with Google (Admin)
-          </button>
-        </>
-      )}
       <p className="auth-switch">
         Not an admin? <a href="/login">Regular login</a>
       </p>

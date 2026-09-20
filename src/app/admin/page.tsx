@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 export default async function Admin() {
   const { db } = await requireAdmin();
   const responses = await Promise.all(

@@ -1,4 +1,4 @@
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { AdminForm } from "@/components/admin-form";
 import type { Test, Exam } from "@/lib/types";
 function Fields({ test, exams }: { test?: Test; exams: Exam[] }) {
