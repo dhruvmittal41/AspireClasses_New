@@ -1,0 +1,6 @@
+frontend/
+backend/
+node_modules/
+.next/
+package-lock.json
+public/payment-qr.svg
