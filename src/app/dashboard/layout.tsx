@@ -9,10 +9,11 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { profile } = await requireUser();
+  const { db, profile } = await requireUser();
+  const { data: isAdmin } = await db.rpc("is_admin");
   return (
     <div className="dashboard-layout">
-      <DashboardNav name={profile.full_name} admin={profile.role === "admin"} />
+      <DashboardNav name={profile.full_name} admin={isAdmin === true} />
       <main id="main" className="dashboard-main">
         {children}
       </main>

@@ -41,12 +41,10 @@ export async function requireAdmin() {
     );
   }
 
-  // Check if user is in admin allowlist and has admin role
+  // The database checks the verified user's email against the allowlist.
   const { data: isAdmin, error: adminCheckError } = await db.rpc("is_admin");
 
   if (adminCheckError || !isAdmin) {
-    // Sign out unauthorized user and redirect
-    await db.auth.signOut();
     redirect(`${loginUrl}?error=unauthorized`);
   }
 

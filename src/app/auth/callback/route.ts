@@ -15,13 +15,12 @@ export async function GET(request: NextRequest) {
       const next = safeNext(request.nextUrl.searchParams.get("next"));
 
       // If this is an admin login attempt, verify admin status
-      if (isAdminLogin || next.startsWith("/admin")) {
+      if (isAdminLogin || next === "/admin" || next.startsWith("/admin/")) {
         const { data: isAdmin, error: adminCheckError } =
           await db.rpc("is_admin");
 
         if (adminCheckError || !isAdmin) {
-          // Sign out and redirect to admin login with error
-          await db.auth.signOut();
+          // Denying admin access must not invalidate a valid student session.
           return NextResponse.redirect(
             new URL("/admin-login?error=unauthorized", origin),
           );

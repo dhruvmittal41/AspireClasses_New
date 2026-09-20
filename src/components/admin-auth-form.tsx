@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, Mail } from "lucide-react";
 import { isConfigured } from "@/lib/supabase/config";
 import { verifyAdminEmail } from "@/app/admin-login/actions";
@@ -11,6 +11,7 @@ export function AdminAuthForm() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const search = useSearchParams();
+  const router = useRouter();
   const configured = isConfigured();
 
   async function submit(event: React.FormEvent) {
@@ -23,8 +24,10 @@ export function AdminAuthForm() {
 
       if (result?.error) {
         setError(result.error);
+      } else if (result.next) {
+        router.replace(result.next);
+        router.refresh();
       }
-      // If no error, the server action will redirect to /admin
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Please try again.");
     } finally {
@@ -36,16 +39,16 @@ export function AdminAuthForm() {
     <div className="auth-card">
       <span className="eyebrow">ADMIN ACCESS</span>
       <h1>Administrator Login</h1>
-      <p>Enter your authorized admin email to access the admin dashboard.</p>
+      <p>Enter your approved email. If you are not signed in, we’ll ask you to sign in before checking admin access.</p>
       {!configured && (
         <div className="notice">
-          Admin login will be available once the site's Supabase connection is
+          Admin login will be available once the site’s Supabase connection is
           configured.
         </div>
       )}
       {search.get("error") === "unauthorized" && (
         <p role="alert" className="error-message">
-          Your session expired or you don't have admin access.
+          Your session expired or you don’t have admin access.
         </p>
       )}
       <form onSubmit={submit}>
@@ -77,7 +80,7 @@ export function AdminAuthForm() {
         </button>
       </form>
       <p className="auth-switch">
-        Not an admin? <a href="/login">Regular login</a>
+        <a href="/login?next=%2Fadmin">Sign in with your admin account</a>
       </p>
     </div>
   );
