@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowRight, Mail, ShieldAlert } from "lucide-react";
+import { ArrowRight, Mail } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { isConfigured } from "@/lib/supabase/config";
 
@@ -35,20 +35,7 @@ export function AdminAuthForm() {
       const db = supabaseBrowser();
       const trimmedEmail = email.trim().toLowerCase();
 
-      // First check if this email is in the admin allowlist
-      const { data: allowlistCheck, error: allowlistError } = await db
-        .from("admin_allowlist")
-        .select("enabled")
-        .eq("email", trimmedEmail)
-        .single();
-
-      if (allowlistError || !allowlistCheck || !allowlistCheck.enabled) {
-        throw new Error(
-          "This email is not authorized for admin access. Contact an administrator if you believe this is an error.",
-        );
-      }
-
-      // Send magic link (OTP)
+      // Send magic link (OTP) - the server will verify admin status on callback
       const { error: otpError } = await db.auth.signInWithOtp({
         email: trimmedEmail,
         options: {
@@ -91,22 +78,9 @@ export function AdminAuthForm() {
 
   return (
     <div className="auth-card">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          marginBottom: "1rem",
-        }}
-      >
-        <ShieldAlert size={24} style={{ color: "var(--color-primary)" }} />
-        <span className="eyebrow">ADMIN ACCESS</span>
-      </div>
+      <span className="eyebrow">ADMIN ACCESS</span>
       <h1>Administrator Login</h1>
-      <p>
-        This area is restricted to authorized administrators only. Enter your
-        admin email to receive a secure login link.
-      </p>
+      <p>Enter your authorized admin email to receive a secure login link.</p>
       {!configured && (
         <div className="notice">
           Admin login will be available once the site's Supabase connection is
@@ -115,7 +89,8 @@ export function AdminAuthForm() {
       )}
       {search.get("error") === "unauthorized" && (
         <p role="alert" className="error-message">
-          Your account is not authorized for admin access.
+          Your account is not authorized for admin access. Contact an
+          administrator if you believe this is an error.
         </p>
       )}
       {search.get("error") === "callback" && (
@@ -142,6 +117,7 @@ export function AdminAuthForm() {
               maxLength={254}
               placeholder="admin@example.com"
               disabled={busy}
+              style={{ paddingLeft: "2.5rem" }}
             />
           </span>
         </label>
@@ -170,14 +146,8 @@ export function AdminAuthForm() {
           </button>
         </>
       )}
-      <p
-        className="auth-switch"
-        style={{ textAlign: "center", marginTop: "1.5rem" }}
-      >
-        Not an admin?{" "}
-        <a href="/login" style={{ color: "var(--color-primary)" }}>
-          Regular login
-        </a>
+      <p className="auth-switch">
+        Not an admin? <a href="/login">Regular login</a>
       </p>
     </div>
   );
