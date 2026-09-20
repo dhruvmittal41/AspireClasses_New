@@ -29,17 +29,15 @@ export default async function Admin() {
         ))}
       </div>
       <div className="panel">
-        <h2>From an idea to a published test.</h2>
+        <h2>Publish a test</h2>
         <ol className="feature-list">
           <li>Add or choose an exam collection.</li>
           <li>Create a test as a draft and add its questions.</li>
           <li>
-            Review the questions, duration, and availability, then publish the
-            test.
+            Review and publish.
           </li>
           <li>
-            Assign standard tests to students. Published demo tests are
-            available to all students.
+            Assign students or offer a free demo.
           </li>
         </ol>
         <Link href="/admin/create-test" className="button">

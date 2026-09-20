@@ -1,9 +1,10 @@
 import "server-only";
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { supabaseServer } from "./supabase/server";
 import { isConfigured } from "./supabase/config";
 import type { Profile } from "./types";
-export async function requireUser(returnTo = "/dashboard") {
+export const requireUser = cache(async (returnTo = "/dashboard") => {
   const loginUrl = "/login?next=" + encodeURIComponent(returnTo);
   if (!isConfigured()) redirect(loginUrl);
   const db = await supabaseServer();
@@ -19,8 +20,8 @@ export async function requireUser(returnTo = "/dashboard") {
       "Your profile could not be loaded. Please contact support.",
     );
   return { db, user: data.user, profile: profile as Profile };
-}
-export async function requireAdmin() {
+});
+export const requireAdmin = cache(async () => {
   const loginUrl = "/admin-login";
   if (!isConfigured()) redirect(loginUrl);
 
@@ -49,4 +50,4 @@ export async function requireAdmin() {
   }
 
   return { db, user: data.user, profile: profile as Profile };
-}
+});

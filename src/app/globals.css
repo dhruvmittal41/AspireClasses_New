@@ -215,7 +215,7 @@ img {
 }
 .eyebrow {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.7px;
   font-weight: 650;
   margin-bottom: 17px;
@@ -228,7 +228,7 @@ img {
   border: 1px solid #caddea;
   border-radius: 30px;
   padding: 8px 12px;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.3px;
   font-weight: 600;
   background: #e6f0f6;
@@ -274,7 +274,7 @@ img {
 .hero-benefits {
   display: flex;
   gap: 20px;
-  font-size: 11px;
+  font-size: 12px;
   color: #557d9e;
 }
 .hero-benefits span {
@@ -321,7 +321,7 @@ img {
   top: 90px;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #567e9f;
 }
@@ -342,7 +342,7 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 6px;
+  font-size: 12px;
   letter-spacing: 1.2px;
   color: #557d9e;
 }
@@ -365,7 +365,7 @@ img {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 10px;
+  font-size: 12px;
   color: #476984;
   margin: 12px 0;
 }
@@ -388,7 +388,7 @@ img {
   justify-content: space-between;
   align-items: center;
   margin-top: 15px;
-  font-size: 6px;
+  font-size: 12px;
   letter-spacing: 1.6px;
 }
 .floating-note {
@@ -420,7 +420,7 @@ img {
 .floating-note small {
   display: block;
   color: #567e9f;
-  font-size: 10px;
+  font-size: 12px;
   margin-top: 2px;
   font-weight: 400;
 }
@@ -428,7 +428,7 @@ img {
   position: absolute;
   bottom: -29px;
   right: 16px;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #567e9f;
 }
@@ -539,7 +539,7 @@ img {
   width: fit-content;
   padding: 4px 9px;
   border-radius: 30px;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.1px;
   background: #cfe0eb;
@@ -551,7 +551,7 @@ img {
   color: #567e9f;
 }
 .exam-card .eyebrow {
-  font-size: 7px;
+  font-size: 12px;
   letter-spacing: 1.2px;
   margin-bottom: 9px;
   color: #567e9f;
@@ -561,7 +561,7 @@ img {
   margin-bottom: 12px;
 }
 .exam-card p {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.85;
   color: #557d9d;
   margin-bottom: 18px;
@@ -576,7 +576,7 @@ img {
   border: 1px solid #c1d7e6;
   border-radius: 4px;
   padding: 3px 6px;
-  font-size: 8px;
+  font-size: 12px;
   color: #547c9c;
 }
 .card-link {
@@ -585,7 +585,7 @@ img {
   align-items: center;
   gap: 8px;
   margin-top: auto;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   border-top: 1px solid #c7dbe8;
   padding: 18px 0;
@@ -615,7 +615,7 @@ img {
   height: 40px;
   border: 1px solid #b6d4e1;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: 12px;
   color: #2d7999;
   margin-bottom: 24px;
   background: #f2f7fb;
@@ -684,7 +684,7 @@ img {
 }
 .cta-panel .eyebrow {
   color: #81c0db;
-  font-size: 9px;
+  font-size: 12px;
 }
 .cta-panel h2 {
   color: #f7fcff;
@@ -730,7 +730,7 @@ img {
   justify-content: space-between;
   border-top: 1px solid var(--line);
   padding: 23px 0 28px;
-  font-size: 10px;
+  font-size: 12px;
   color: #567e9f;
   gap: 20px;
 }
@@ -856,11 +856,11 @@ img {
   display: inline-flex;
   gap: 6px;
   align-items: center;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
 }
 .test-card-bottom .text-link {
-  font-size: 11px;
+  font-size: 12px;
 }
 .exam-detail-hero {
   padding: 58px 0 48px;
@@ -873,7 +873,7 @@ img {
   max-width: 620px;
 }
 .exam-detail-hero .subject-tags span {
-  font-size: 11px;
+  font-size: 12px;
   padding: 6px 11px;
 }
 .price {
@@ -895,7 +895,7 @@ img {
   margin-bottom: 9px;
 }
 .fine-print {
-  font-size: 11px !important;
+  font-size: 12px !important;
   line-height: 1.8;
   margin-top: 22px;
 }
@@ -956,7 +956,7 @@ img {
   color: #3083a6;
 }
 .auth-aside > span {
-  font-size: 11px;
+  font-size: 12px;
   color: #567e9f;
 }
 .auth-aside p {
@@ -1076,7 +1076,7 @@ input:disabled {
   margin: 0 12px 48px;
 }
 .sidebar-label {
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.4px;
   color: #567e9f;
@@ -1125,17 +1125,17 @@ input:disabled {
   background: #d2e2ec;
 }
 .student-identity strong {
-  font-size: 11px;
+  font-size: 12px;
   display: block;
   max-width: 125px;
   overflow-wrap: anywhere;
 }
 .student-identity small {
-  font-size: 9px;
+  font-size: 12px;
   color: #567e9f;
 }
 .sidebar-bottom .text-button {
-  font-size: 10px;
+  font-size: 12px;
   color: #567e9f;
 }
 .dashboard-main {
@@ -1149,14 +1149,14 @@ input:disabled {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.2px;
   color: #567e9f;
   border-bottom: 1px solid var(--line);
   padding: 0 0 26px;
 }
 .dashboard-topline a {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0;
   color: #2c7899;
 }
@@ -1193,14 +1193,14 @@ input:disabled {
 }
 .dashboard-banner .eyebrow {
   color: #93c0d3;
-  font-size: 8px;
+  font-size: 12px;
 }
 .dashboard-banner p {
   font-size: 12px;
   color: #99bad5;
 }
 .dashboard-banner .button {
-  font-size: 11px;
+  font-size: 12px;
   padding: 12px 17px;
 }
 .banner-art {
@@ -1240,7 +1240,7 @@ input:disabled {
   line-height: 1.3;
 }
 .stat-card > span {
-  font-size: 11px;
+  font-size: 12px;
   color: #567e9f;
   margin-top: 9px;
 }
@@ -1266,7 +1266,7 @@ input:disabled {
   margin-bottom: 0;
 }
 .result-row .eyebrow {
-  font-size: 9px;
+  font-size: 12px;
 }
 .result-score {
   min-width: 145px;
@@ -1288,7 +1288,7 @@ input:disabled {
   accent-color: var(--primary);
 }
 .result-score > span {
-  font-size: 10px;
+  font-size: 12px;
   color: #567e9f;
   display: block;
   text-align: right;
@@ -1342,7 +1342,7 @@ input:disabled {
   border-color: #f1cfc4;
 }
 .save-status {
-  font-size: 11px;
+  font-size: 12px;
   text-align: right;
 }
 .test-workspace {
@@ -1355,7 +1355,7 @@ input:disabled {
   display: flex;
   justify-content: space-between;
   gap: 15px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: #557d9d;
   margin-bottom: 26px;
@@ -1397,7 +1397,7 @@ input:disabled {
   background: #e4eff6;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 12px;
   border-radius: 5px;
   flex-shrink: 0;
 }
@@ -1633,11 +1633,11 @@ input:disabled {
   }
   .floating-note {
     left: -16px;
-    font-size: 10px;
+    font-size: 12px;
     padding: 14px;
   }
   .sheet-task {
-    font-size: 9px;
+    font-size: 12px;
   }
   .exam-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1649,13 +1649,13 @@ input:disabled {
     font-size: 13px;
   }
   .exam-card .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
   }
   .card-link {
     font-size: 12px;
   }
   .subject-tags span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .faq-section {
     gap: 50px;
@@ -1719,11 +1719,11 @@ input:disabled {
     font-size: 47px;
   }
   .sheet-header {
-    font-size: 5px;
+    font-size: 12px;
     letter-spacing: 0.5px;
   }
   .sheet-task {
-    font-size: 8px;
+    font-size: 12px;
     gap: 6px;
     margin: 9px 0;
   }
@@ -1742,7 +1742,7 @@ input:disabled {
   }
   .art-label {
     left: -12px;
-    font-size: 6px;
+    font-size: 12px;
   }
   .hero-benefits {
     flex-direction: column;
@@ -1755,7 +1755,7 @@ input:disabled {
     padding-block: 25px;
   }
   .feature-strip span {
-    font-size: 11px;
+    font-size: 12px;
   }
   .section {
     padding-block: 60px;
@@ -1783,14 +1783,14 @@ input:disabled {
     font-size: 26px;
   }
   .cta-panel .button {
-    font-size: 11px;
+    font-size: 12px;
     padding: 14px 16px;
   }
   .footer-grid {
     grid-template-columns: 1.3fr 1fr 1fr;
   }
   .footer-bottom {
-    font-size: 9px;
+    font-size: 12px;
   }
   .three-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1839,7 +1839,7 @@ input:disabled {
   .dashboard-sidebar nav a {
     white-space: nowrap;
     padding: 10px 12px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .dashboard-sidebar nav svg {
     width: 16px;
@@ -1878,7 +1878,7 @@ input:disabled {
     font-size: 24px;
   }
   .test-topbar .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
   }
   .timer {
     font-size: 17px;
@@ -1894,7 +1894,7 @@ input:disabled {
     gap: 8px;
   }
   .admin-nav a {
-    font-size: 11px;
+    font-size: 12px;
     padding: 8px 12px;
   }
 }
@@ -1957,15 +1957,15 @@ input:disabled {
     padding: 16px 19px;
   }
   .hero-actions .text-link {
-    font-size: 11px;
+    font-size: 12px;
   }
   .hero-benefits {
     flex-direction: row;
     gap: 15px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .pill {
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 1px;
   }
   .hero-art {
@@ -1988,16 +1988,16 @@ input:disabled {
     font-size: 55px;
   }
   .sheet-task {
-    font-size: 9px;
+    font-size: 12px;
   }
   .floating-note {
     bottom: 15px;
     left: -13px;
     padding: 12px 16px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .floating-note small {
-    font-size: 9px;
+    font-size: 12px;
   }
   .art-star {
     font-size: 85px;
@@ -2007,7 +2007,7 @@ input:disabled {
     gap: 20px 12px;
   }
   .feature-strip span {
-    font-size: 10px;
+    font-size: 12px;
     gap: 8px;
   }
   .feature-strip svg {
@@ -2023,7 +2023,7 @@ input:disabled {
     font-size: 28px;
   }
   .section-heading .eyebrow {
-    font-size: 9px;
+    font-size: 12px;
   }
   .exam-grid {
     grid-template-columns: 1fr;
@@ -2043,10 +2043,10 @@ input:disabled {
     font-size: 13px;
   }
   .exam-card .eyebrow {
-    font-size: 8px;
+    font-size: 12px;
   }
   .subject-tags span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .steps-grid {
     grid-template-columns: 1fr;
@@ -2110,7 +2110,7 @@ input:disabled {
   }
   .filter-tabs button {
     flex: 1;
-    font-size: 11px;
+    font-size: 12px;
     padding: 9px 12px;
   }
   .search-field input {
@@ -2171,10 +2171,10 @@ input:disabled {
     max-width: 180px;
   }
   .dashboard-banner .button {
-    font-size: 10px;
+    font-size: 12px;
   }
   .dashboard-banner .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 1.1px;
   }
   .stats-grid {
@@ -2191,7 +2191,7 @@ input:disabled {
     font-size: 26px;
   }
   .stat-card > span {
-    font-size: 9px;
+    font-size: 12px;
     line-height: 1.5;
   }
   .result-row {
@@ -2221,7 +2221,7 @@ input:disabled {
     font-size: 21px;
   }
   .test-topbar .eyebrow {
-    font-size: 7px;
+    font-size: 12px;
     letter-spacing: 0.8px;
   }
   .timer {
@@ -2245,14 +2245,14 @@ input:disabled {
     font-size: 13px;
   }
   .question-meta {
-    font-size: 9px;
+    font-size: 12px;
   }
   .question-navigation .button {
     font-size: 12px;
     padding: 12px 17px;
   }
   .question-actions .text-button {
-    font-size: 11px;
+    font-size: 12px;
   }
   .notice {
     font-size: 12px;
@@ -2285,7 +2285,7 @@ input:disabled {
 .mobile-signout {
   display: none;
 }
-.password-input-wrap{position:relative;display:flex;align-items:center;margin-top:7px}.password-input-wrap>svg{position:absolute;left:13px;color:#8091a3;pointer-events:none}.password-input-wrap input{padding-left:38px!important;padding-right:42px!important;margin-top:0!important}.password-toggle{position:absolute;right:8px;border:0;background:transparent;padding:8px;color:#6d8095;display:flex;align-items:center}.password-toggle:hover{color:var(--primary)}.auth-forgot{margin-top:14px;font-size:12px;color:#4d6f8d}.auth-divider{display:flex;align-items:center;gap:12px;color:#91a0ad;font-size:11px;margin:25px 0 13px}.auth-divider:before,.auth-divider:after{content:"";height:1px;flex:1;background:var(--line)}.auth-divider span{padding-inline:4px}.success-message{color:#166b80!important}.auth-card .notice{font-size:12px;line-height:1.55}
+.password-input-wrap{position:relative;display:flex;align-items:center;margin-top:7px}.password-input-wrap>svg{position:absolute;left:13px;color:#8091a3;pointer-events:none}.password-input-wrap input{padding-left:38px!important;padding-right:42px!important;margin-top:0!important}.password-toggle{position:absolute;right:8px;border:0;background:transparent;padding:8px;color:#6d8095;display:flex;align-items:center}.password-toggle:hover{color:var(--primary)}.auth-forgot{margin-top:14px;font-size:12px;color:#4d6f8d}.auth-divider{display:flex;align-items:center;gap:12px;color:#91a0ad;font-size: 12px;margin:25px 0 13px}.auth-divider:before,.auth-divider:after{content:"";height:1px;flex:1;background:var(--line)}.auth-divider span{padding-inline:4px}.success-message{color:#166b80!important}.auth-card .notice{font-size:12px;line-height:1.55}
 .katex-display {
   overflow-x: auto;
   overflow-y: hidden;

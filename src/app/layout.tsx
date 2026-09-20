@@ -3,6 +3,7 @@ import { Providers } from "@/components/providers";
 import { site } from "@/lib/site";
 import "katex/dist/katex.min.css";
 import "./globals.css";
+import "./responsive.css";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {

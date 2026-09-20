@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { NavLink } from "./nav-link";
 import {
   LayoutDashboard,
   BookOpen,
@@ -24,7 +25,6 @@ export function DashboardNav({
   name: string;
   admin: boolean;
 }) {
-  const pathname = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
   const [error, setError] = useState("");
@@ -53,14 +53,13 @@ export function DashboardNav({
       <span className="sidebar-label">YOUR LEARNING SPACE</span>
       <nav aria-label="Student navigation">
         {links.map(([href, label, Icon]) => (
-          <Link
+          <NavLink
             key={href}
             href={href}
-            className={pathname === href ? "active" : ""}
           >
             <Icon size={19} />
             {label}
-          </Link>
+          </NavLink>
         ))}
         {admin && (
           <Link href="/admin">
