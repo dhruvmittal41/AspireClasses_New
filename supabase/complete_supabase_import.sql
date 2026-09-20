@@ -6491,6 +6491,15 @@ ALTER TABLE public.admin_allowlist ENABLE ROW LEVEL SECURITY;
 -- Revoke all access by default
 REVOKE ALL ON public.admin_allowlist FROM public, anon, authenticated;
 
+-- Allow anyone to check if an email is in the allowlist (for client-side validation)
+CREATE POLICY admin_allowlist_read ON public.admin_allowlist 
+  FOR SELECT 
+  TO anon, authenticated 
+  USING (true);
+
+-- Grant select permission
+GRANT SELECT ON public.admin_allowlist TO anon, authenticated;
+
 -- Drop the old is_admin function if it exists
 DROP FUNCTION IF EXISTS public.is_admin();
 

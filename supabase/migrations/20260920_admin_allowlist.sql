@@ -22,6 +22,15 @@ alter table public.admin_allowlist enable row level security;
 -- Revoke all access by default
 revoke all on public.admin_allowlist from public, anon, authenticated;
 
+-- Allow anyone to check if an email is in the allowlist (for client-side validation)
+create policy admin_allowlist_read on public.admin_allowlist 
+  for select 
+  to anon, authenticated 
+  using (true);
+
+-- Grant select permission
+grant select on public.admin_allowlist to anon, authenticated;
+
 -- Create function to check if current user is an admin
 create or replace function public.is_admin()
 returns boolean
