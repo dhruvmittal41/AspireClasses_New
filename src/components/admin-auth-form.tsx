@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, Mail } from "lucide-react";
 import { isConfigured } from "@/lib/supabase/config";
 import { verifyAdminEmail } from "@/app/admin-login/actions";
@@ -12,7 +12,6 @@ export function AdminAuthForm() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const search = useSearchParams();
-  const router = useRouter();
   const configured = isConfigured();
 
   async function submit(event: React.FormEvent) {
@@ -26,8 +25,7 @@ export function AdminAuthForm() {
       if (result?.error) {
         setError(result.error);
       } else if (result.next) {
-        router.replace(result.next);
-        router.refresh();
+        window.location.replace(result.next);
       }
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Please try again.");

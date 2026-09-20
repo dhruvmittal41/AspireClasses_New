@@ -7,8 +7,8 @@ const config: NextConfig = {
       { source: "/home", destination: "/dashboard", permanent: true },
       {
         source: "/admin/login",
-        destination: "/login?next=/admin",
-        permanent: true,
+        destination: "/admin-login",
+        permanent: false,
       },
     ];
   },

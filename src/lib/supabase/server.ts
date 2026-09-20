@@ -1,11 +1,14 @@
 import "server-only";
+import { cache } from "react";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { credentials } from "./config";
-export async function supabaseServer() {
+import { authCookieOptions } from "./cookie-options";
+export const supabaseServer = cache(async () => {
   const { url, key } = credentials();
   const jar = await cookies();
   return createServerClient(url, key, {
+    cookieOptions: authCookieOptions,
     cookies: {
       getAll: () => jar.getAll(),
       setAll(items) {
@@ -19,4 +22,4 @@ export async function supabaseServer() {
       },
     },
   });
-}
+});

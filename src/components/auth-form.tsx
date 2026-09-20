@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, LockKeyhole } from "lucide-react";
 import { supabaseBrowser } from "@/lib/supabase/browser";
 import { isConfigured } from "@/lib/supabase/config";
@@ -77,7 +77,6 @@ export function AuthForm({ register = false }: { register?: boolean }) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const router = useRouter();
   const search = useSearchParams();
   const next = safeNext(search.get("next"));
   const configured = isConfigured();
@@ -106,8 +105,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
         });
         if (signUpError) throw signUpError;
         if (data.session) {
-          router.replace(next);
-          router.refresh();
+          window.location.replace(next);
         } else
           setMessage(
             "Your account could not be signed in automatically. Please contact Aspire support to activate it.",
@@ -118,8 +116,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
           password,
         });
         if (loginError) throw loginError;
-        router.replace(next);
-        router.refresh();
+        window.location.replace(next);
       }
     } catch (caught) {
       setError(
