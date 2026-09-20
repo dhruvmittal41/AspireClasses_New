@@ -12,6 +12,8 @@ export async function verifyAdminEmail(email: string, password: string) {
   // Check if email is in admin allowlist
   const db = await supabaseServer();
   const { error: loginError } = await db.auth.signInWithPassword({ email: trimmedEmail, password });
+  if (loginError && (loginError.code === "email_provider_disabled" || loginError.message.toLowerCase().includes("email logins are disabled")))
+    return { error: "Email/password login is disabled in Supabase. The site owner must enable the Email provider and leave Confirm email OFF." };
   if (loginError)
     return { error: loginError.code === "email_not_confirmed"
       ? "This account needs activation. Ask the site owner to activate your admin account in Supabase."

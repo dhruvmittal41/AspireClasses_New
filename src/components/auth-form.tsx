@@ -12,6 +12,8 @@ const MIN_PASSWORD_LENGTH = 8;
 
 function authMessage(message: string) {
   const normalized = message.toLowerCase();
+  if (normalized.includes("email logins are disabled") || normalized.includes("email provider is disabled"))
+    return "Email/password login is disabled. Please ask Aspire support to enable the Email provider.";
   if (normalized.includes("invalid login credentials"))
     return "The email or password is incorrect.";
   if (normalized.includes("email not confirmed"))
