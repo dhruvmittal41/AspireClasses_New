@@ -295,3 +295,111 @@
     padding: 0 32px;
   }
 }
+/* ========================================
+   ENHANCED FOOTER STYLES (Pure CSS)
+   ======================================== */
+
+.site-footer {
+  width: 100%;
+  background-color: #0f172a; /* Dark Slate background */
+  color: #cbd5e1;
+  padding: 32px 24px 20px 24px;
+  border-top: 1px solid #1e293b;
+  margin-top: auto;
+  box-sizing: border-box;
+}
+
+.footer-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+/* Tagline with separate colors per line */
+.footer-tagline {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-tagline span:nth-child(1) {
+  color: #fbbf24; /* Amber yellow */
+}
+
+.footer-tagline span:nth-child(2) {
+  color: #34d399; /* Emerald green */
+}
+
+/* Titles */
+.site-footer h3 {
+  color: #f8fafc;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* Links Layout */
+.site-footer div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.site-footer a {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-decoration: none;
+  width: fit-content;
+  transition: color 0.2s ease;
+}
+
+/* Interactive link colors */
+.footer-grid div:nth-child(2) a:hover {
+  color: #fbbf24;
+}
+
+.footer-grid div:nth-child(3) a:hover {
+  color: #34d399;
+}
+
+.site-footer .email-link {
+  color: #818cf8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.site-footer .email-link:hover {
+  color: #a5b4fc;
+}
+
+/* Bottom Bar */
+.footer-bottom {
+  max-width: 1200px;
+  margin: 24px auto 0 auto;
+  padding-top: 16px;
+  border-top: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Responsive Grid Layout */
+@media (min-width: 640px) {
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-bottom {
+    flex-direction: row;
+  }
+}

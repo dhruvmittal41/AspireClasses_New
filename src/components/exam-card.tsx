@@ -1,61 +1,54 @@
 import Link from "next/link";
-import { ArrowUpRight, BookOpen } from "lucide-react";
-import type { Exam } from "@/lib/types";
+import { ArrowUpRight } from "lucide-react";
 
-export function ExamCard({ exam }: { exam: Exam; index?: number }) {
-  const soon = exam.status === "coming_soon";
+// Update this interface to allow any properties on the exam object
+interface ExamCardProps {
+  exam: {
+    id: string;
+    title?: string;
+    name?: string;
+    description?: string;
+    [key: string]: any; // Allows flexible property matching
+  };
+  index: number;
+}
+
+export function ExamCard({ exam, index }: ExamCardProps) {
+  const title = exam.title || exam.name || "Untitled Exam";
 
   return (
-    <article className="block block-action">
-      <div className="block-action-content">
-        <div className="block-feature-icon" style={{ margin: "0 0 16px 0" }}>
-          <BookOpen size={24} />
+    <article className="group relative flex flex-col justify-between rounded-3xl bg-white p-6 sm:p-8 border border-[#E3D8BC] shadow-md hover:shadow-2xl shadow-stone-900/5 transition-all duration-300 hover:-translate-y-1.5 overflow-hidden">
+      <div>
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <span className="inline-flex items-center rounded-full bg-emerald-100/80 px-3 py-1 text-xs font-bold text-emerald-800 border border-emerald-200/60">
+            AMU Entrance
+          </span>
+          <span className="text-xs font-mono font-semibold text-stone-400">
+            0{index + 1}
+          </span>
         </div>
 
-        <h3 style={{ fontSize: "20px", marginBottom: "12px" }}>{exam.name}</h3>
-        <p
-          style={{
-            fontSize: "15px",
-            color: "var(--muted)",
-            marginBottom: "16px",
-          }}
-        >
-          {exam.description}
-        </p>
+        <h3 className="text-xl font-extrabold text-stone-900 tracking-tight leading-snug group-hover:text-emerald-800 transition-colors duration-200">
+          {title}
+        </h3>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-          {exam.subjects.slice(0, 3).map((s) => (
-            <span
-              key={s}
-              style={{
-                fontSize: "13px",
-                padding: "4px 12px",
-                borderRadius: "6px",
-                background: "var(--paper-hover)",
-                color: "var(--muted)",
-                fontWeight: "500",
-              }}
-            >
-              {s}
-            </span>
-          ))}
-        </div>
+        {exam.description && (
+          <p className="mt-2 text-sm text-stone-600 line-clamp-2 leading-relaxed">
+            {exam.description}
+          </p>
+        )}
       </div>
 
-      <div className="block-action-footer">
+      <div className="mt-6 pt-2">
         <Link
-          href={"/exams/" + exam.slug}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            color: "var(--primary)",
-            fontWeight: "600",
-            fontSize: "15px",
-          }}
+          href={`/exams/${exam.id}`}
+          className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-full bg-orange-300 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-emerald-900"
         >
-          {soon ? "Coming Soon" : "View Details"}
-          <ArrowUpRight size={18} />
+          <span>Explore Series</span>
+          <ArrowUpRight
+            size={18}
+            className="transition-transform duration-200 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5"
+          />
         </Link>
       </div>
     </article>
