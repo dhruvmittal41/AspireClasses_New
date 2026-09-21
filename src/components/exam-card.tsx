@@ -42,7 +42,7 @@ export function ExamCard({ exam, index }: ExamCardProps) {
       <div className="mt-6 pt-2">
         <Link
           href={`/exams/${exam.id}`}
-          className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-full bg-orange-300 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-emerald-900"
+          className="group/btn inline-flex w-full items-center justify-center gap-2 rounded-full bg-orange-300 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-emerald-500"
         >
           <span>Explore Series</span>
           <ArrowUpRight
