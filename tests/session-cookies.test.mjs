@@ -34,7 +34,9 @@ test('session survives a new client, refresh rotation, and clears on sign-out', 
       }),
     },
   });
-  const { error } = await client().auth.signInWithPassword({ email: user.email, password: 'fixture-password' });
+  const initial = client();
+  await initial.auth.getSession();
+  const { error } = await initial.auth.signInWithPassword({ email: user.email, password: 'fixture-password' });
   assert.equal(error, null);
   assert.ok(jar.size > 0);
   const reloaded = client();

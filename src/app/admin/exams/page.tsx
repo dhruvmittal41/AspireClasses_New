@@ -4,6 +4,7 @@ import type { Exam } from "@/lib/types";
 function Fields({ exam }: { exam?: Exam & { sort_order: number } }) {
   return (
     <>
+      {exam && <input type="hidden" name="existing" value="true" />}
       <label>
         Stable ID (lowercase, hyphens)
         <input
@@ -74,7 +75,7 @@ export default async function Exams() {
     <>
       <div className="panel">
         <h2>Add an exam collection</h2>
-        <AdminForm action="save-exam" label="Create exam">
+        <AdminForm action="save-exam" label="Create exam" resetOnSuccess>
           <Fields />
         </AdminForm>
       </div>

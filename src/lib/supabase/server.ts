@@ -7,7 +7,7 @@ import { authCookieOptions } from "./cookie-options";
 export const supabaseServer = cache(async () => {
   const { url, key } = credentials();
   const jar = await cookies();
-  return createServerClient(url, key, {
+  const client = createServerClient(url, key, {
     cookieOptions: authCookieOptions,
     cookies: {
       getAll: () => jar.getAll(),
@@ -22,4 +22,8 @@ export const supabaseServer = cache(async () => {
       },
     },
   });
+  // Finish SDK initialization before actions emit SIGNED_IN. Session reads
+  // initialize storage only; authorization still uses getUser/is_admin.
+  await client.auth.getSession();
+  return client;
 });

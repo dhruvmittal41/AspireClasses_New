@@ -1,23 +1,27 @@
 import { requireUser } from "@/lib/auth";
-import { DashboardNav } from "@/components/dashboard-nav";
+import { DashboardShell } from "@/components/dashboard-shell";
+
 export const metadata = {
   title: "Your dashboard",
   robots: { index: false, follow: false },
 };
+
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { db, profile } = await requireUser();
+  const { db, user, profile } = await requireUser();
   const { data: isAdmin } = await db.rpc("is_admin");
+
   return (
-    <div className="dashboard-layout">
-      <DashboardNav name={profile.full_name} admin={isAdmin === true} />
-      <main id="main" className="dashboard-main">
-        {children}
-      </main>
-    </div>
+    <DashboardShell
+      name={profile.full_name}
+      email={user.email || ""}
+      isAdmin={isAdmin === true}
+    >
+      {children}
+    </DashboardShell>
   );
 }
 

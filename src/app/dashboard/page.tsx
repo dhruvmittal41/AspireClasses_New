@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { ArrowUpRight, Target, BookOpen, TrendingUp } from "lucide-react";
+import { ArrowUpRight, Target, BookOpen, TrendingUp, Award } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 import { TestCard } from "@/components/test-card";
 import type { Test } from "@/lib/types";
+
 export default async function Dashboard() {
   const { db, user, profile } = await requireUser();
+
   const [results, enrollments, demos] = await Promise.all([
     db
       .from("results")
@@ -22,8 +24,10 @@ export default async function Dashboard() {
       .eq("test_category", "demo")
       .limit(3),
   ]);
+
   if (results.error || enrollments.error || demos.error)
     throw new Error("Dashboard unavailable");
+
   const scores = results.data || [];
   const avg = scores.length
     ? Math.round(
@@ -33,90 +37,164 @@ export default async function Dashboard() {
         ) / scores.length,
       )
     : null;
+
   return (
     <>
-      <div className="dashboard-topline">
-        <span>YOUR PREPARATION, AT A GLANCE</span>
-        <Link href="/exams">Explore exams ↗</Link>
-      </div>
-      <div className="page-heading">
-        <span className="eyebrow">EVERY STEP COUNTS</span>
-        <h1>
-          Hello, {profile.full_name.split(" ")[0] || "there"}{" "}
-          <span className="wave">✳</span>
-        </h1>
-        <p>
-          A fresh opportunity to get a little better. What will you practise
-          today?
-        </p>
-      </div>
-      <div className="dashboard-banner">
-        <div>
-          <span className="eyebrow">SHOW UP FOR YOUR FUTURE SELF</span>
-          <h2>
-            Small steps.
-            <br />
-            Stronger foundations.
-          </h2>
-          <p>Pick a test, find your focus, and make today count.</p>
-          <Link href="/dashboard/my-tests" className="button light">
-            Continue preparing <ArrowUpRight size={17} />
-          </Link>
+      {/* Hero Block */}
+      <section className="block-section">
+        <div className="block-container">
+          <div className="block-hero">
+            <h1>Hey {profile.full_name.split(" ")[0] || "there"} 👋</h1>
+            <p>Your dashboard for test preparation</p>
+            <Link href="/dashboard/my-tests" className="button light">
+              My Tests <ArrowUpRight size={20} />
+            </Link>
+          </div>
         </div>
-        <span className="banner-art" aria-hidden="true">
-          ↗
-        </span>
-      </div>
-      <div className="stats-grid">
-        {[
-          [BookOpen, enrollments.count || 0, "Assigned tests"],
-          [Target, scores.length, "Completed attempts"],
-          [TrendingUp, avg === null ? "—" : avg + "%", "Average score"],
-        ].map(([Icon, value, label]) => {
-          const I = Icon as typeof BookOpen;
-          return (
-            <div className="stat-card" key={String(label)}>
-              <I size={22} />
-              <strong>{String(value)}</strong>
-              <span>{String(label)}</span>
+      </section>
+
+      {/* Stats Grid */}
+      <section className="block-section" style={{ paddingTop: 0 }}>
+        <div className="block-container">
+          <div className="block-grid block-grid-3">
+            <div className="block block-stat">
+              <div className="block-stat-icon">
+                <BookOpen size={28} />
+              </div>
+              <strong className="block-stat-value">
+                {enrollments.count || 0}
+              </strong>
+              <span className="block-stat-label">Assigned</span>
             </div>
-          );
-        })}
-      </div>
-      <div className="section-heading">
-        <div>
-          <h2>A little practice goes a long way.</h2>
-          <p>Start with a free demo test.</p>
+
+            <div className="block block-stat">
+              <div className="block-stat-icon">
+                <Target size={28} />
+              </div>
+              <strong className="block-stat-value">{scores.length}</strong>
+              <span className="block-stat-label">Completed</span>
+            </div>
+
+            <div className="block block-stat">
+              <div className="block-stat-icon">
+                <TrendingUp size={28} />
+              </div>
+              <strong className="block-stat-value">
+                {avg === null ? "—" : avg + "%"}
+              </strong>
+              <span className="block-stat-label">Avg Score</span>
+            </div>
+          </div>
         </div>
-        <Link href="/exams#free-practice" className="text-link">
-          View all ↗
-        </Link>
-      </div>
-      {demos.data.length ? (
-        <div className="three-grid">
-          {(demos.data as Test[]).map((t) => (
-            <TestCard key={t.id} test={t} />
-          ))}
+      </section>
+
+      {/* Demo Tests */}
+      <section className="block-section">
+        <div className="block-container">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "32px",
+            }}
+          >
+            <h2 style={{ margin: 0 }}>Demo Tests</h2>
+            <Link
+              href="/exams"
+              style={{
+                fontSize: "15px",
+                color: "var(--primary)",
+                fontWeight: "600",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              View All <ArrowUpRight size={18} />
+            </Link>
+          </div>
+
+          {demos.data.length ? (
+            <div className="block-grid block-grid-3">
+              {(demos.data as Test[]).map((t) => (
+                <TestCard key={t.id} test={t} />
+              ))}
+            </div>
+          ) : (
+            <div className="block block-empty">
+              <h3>No tests available</h3>
+              <p>Check back soon</p>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="empty-state">
-          <h3>Your practice space is ready.</h3>
-          <p>Demo tests will appear here when the team publishes them.</p>
-        </div>
+      </section>
+
+      {/* Recent Results */}
+      {scores.length > 0 && (
+        <section className="block-section" style={{ paddingTop: 0 }}>
+          <div className="block-container">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "32px",
+              }}
+            >
+              <h2 style={{ margin: 0 }}>Recent Results</h2>
+              <Link
+                href="/dashboard/results"
+                style={{
+                  fontSize: "15px",
+                  color: "var(--primary)",
+                  fontWeight: "600",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+              >
+                View All <ArrowUpRight size={18} />
+              </Link>
+            </div>
+
+            <div className="block">
+              <div className="block-list">
+                {scores.slice(0, 3).map((result, i) => {
+                  const percentage = result.total_marks
+                    ? Math.round((result.score / result.total_marks) * 100)
+                    : 0;
+
+                  return (
+                    <div key={i} className="block-list-item">
+                      <div className="block-list-icon">
+                        <Award size={20} />
+                      </div>
+                      <div className="block-list-content">
+                        <div className="block-list-title">
+                          {(Array.isArray(result.tests) ? result.tests[0]?.test_name : (result.tests as { test_name?: string } | null)?.test_name) || "Test"}
+                        </div>
+                        <div className="block-list-meta">
+                          {new Date(result.submitted_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "600",
+                          color: "var(--primary)",
+                        }}
+                      >
+                        {percentage}%
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
       )}
-      <div className="section-heading spaced">
-        <h2>Your progress story</h2>
-        <Link href="/dashboard/results" className="text-link">
-          See results ↗
-        </Link>
-      </div>
-      <div className="panel">
-        <p>
-          {scores.length
-            ? `You’ve completed ${scores.length} attempt${scores.length === 1 ? "" : "s"}. Keep practising and use each result to guide your next revision.`
-            : "Your first result is a starting point, not a final verdict. Complete a test to begin tracking your progress."}
-        </p>
-      </div>
     </>
   );
 }

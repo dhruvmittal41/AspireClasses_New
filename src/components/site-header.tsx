@@ -22,14 +22,15 @@ export function SiteHeader() {
           aria-label="Main navigation"
           onClick={() => setOpen(false)}
         >
-          <Link href="/exams">Explore exams</Link>
-          <Link href="/#how-it-works">How it works</Link>
-          <Link href="/contact">Get in touch</Link>
+          <Link href="/#why-us">Why us</Link>
+          <Link href="/exams">Test series</Link>
+          <Link href="/#features">Features</Link>
+          <Link href="/contact">Contact</Link>
           <Link href="/login" className="nav-login">
             Log in
           </Link>
           <Link href="/register" className="button small">
-            Start preparing <ArrowUpRight size={16} />
+            Register now <ArrowUpRight size={16} />
           </Link>
         </nav>
       </div>

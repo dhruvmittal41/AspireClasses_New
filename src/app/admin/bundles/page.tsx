@@ -63,7 +63,7 @@ export default async function Bundles() {
     <>
       <section className="panel">
         <h2>Create a bundle</h2>
-        <AdminForm action="save-bundle" label="Create bundle">
+        <AdminForm action="save-bundle" label="Create bundle" resetOnSuccess>
           <Fields exams={exams.data} />
         </AdminForm>
       </section>

@@ -37,6 +37,12 @@ const attemptSlice = createSlice({
       state.flagged = [];
       state.index = 0;
     },
+    restoreProgress(state, action: PayloadAction<{ answers: Record<string, string>; flagged: number[]; index: number }>) {
+      if (!state.current) return;
+      state.answers = action.payload.answers;
+      state.flagged = action.payload.flagged;
+      state.index = Math.max(0, Math.min(action.payload.index, state.current.questions.length - 1));
+    },
     answer(state, action: PayloadAction<{ id: number; value: string }>) {
       state.answers[action.payload.id] = action.payload.value;
     },
@@ -59,6 +65,7 @@ const attemptSlice = createSlice({
 export const { setQuery, setExam } = catalogSlice.actions;
 export const {
   loadAttempt,
+  restoreProgress,
   resetAttempt,
   answer,
   clearAnswer,

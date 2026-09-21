@@ -12,7 +12,10 @@ const MIN_PASSWORD_LENGTH = 8;
 
 function authMessage(message: string) {
   const normalized = message.toLowerCase();
-  if (normalized.includes("email logins are disabled") || normalized.includes("email provider is disabled"))
+  if (
+    normalized.includes("email logins are disabled") ||
+    normalized.includes("email provider is disabled")
+  )
     return "Email/password login is disabled. Please ask Aspire support to enable the Email provider.";
   if (normalized.includes("invalid login credentials"))
     return "The email or password is incorrect.";
@@ -146,16 +149,11 @@ export function AuthForm({ register = false }: { register?: boolean }) {
   }
   return (
     <div className="auth-card">
-      <span className="eyebrow">
-        {register ? "A NEW STEP FORWARD" : "WELCOME BACK"}
-      </span>
-      <h1>
-        {register ? "Your ambition belongs here." : "Good to have you back."}
-      </h1>
+      <h1>{register ? "Create Account" : "Log In"}</h1>
       <p>
         {register
-          ? "Create your Aspire account and keep your preparation in one place."
-          : "Log in with your email and password to continue."}
+          ? "Start your preparation journey"
+          : "Continue to your dashboard"}
       </p>
       {!configured && (
         <div className="notice">
@@ -265,7 +263,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
         </>
       )}
       <p className="auth-switch">
-        {register ? "Already part of Aspire?" : "First time here?"}{" "}
+        {register ? "Have an account?" : "New here?"}{" "}
         <Link
           href={
             (register ? "/login" : "/register") +
@@ -273,7 +271,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
             encodeURIComponent(next)
           }
         >
-          {register ? "Log in" : "Create an account"}
+          {register ? "Log in" : "Sign up"}
         </Link>
       </p>
     </div>

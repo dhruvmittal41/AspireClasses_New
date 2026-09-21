@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { TestPlayer } from "@/components/test-player";
@@ -25,12 +24,10 @@ export default async function TestPage({
   if (error) throw error;
   if (!data) notFound();
   return (
-    <main id="main" className="container section">
+    <main id="main" className="container section test-page">
       <div className="test-page-header">
         <Brand />
-        <Link href="/dashboard/my-tests" className="text-link">
-          ← My tests
-        </Link>
+        <span className="test-page-label">Focus. Practise. Improve.</span>
       </div>
       <TestPlayer test={data as Test} />
     </main>

@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { testSchema, questionSchema } from "@/lib/validation";
-export type ActionState = { ok: boolean; message: string };
+export type ActionState = { ok: boolean; message: string; href?: string };
 const text = (form: FormData, key: string) => String(form.get(key) || "");
 const positive = z.coerce.number().int().positive();
 export async function adminAction(
@@ -13,6 +13,7 @@ export async function adminAction(
   const { db } = await requireAdmin();
   try {
     const action = text(form, "action");
+    let href: string | undefined;
     let error: { message: string } | null = null;
     if (action === "save-test") {
       const date = text(form, "date_scheduled");
@@ -47,9 +48,10 @@ export async function adminAction(
           };
       }
       const result = id
-        ? await db.from("tests").update(input).eq("id", positive.parse(id))
-        : await db.from("tests").insert(input);
+        ? await db.from("tests").update(input).eq("id", positive.parse(id)).select("id").single()
+        : await db.from("tests").insert(input).select("id").single();
       error = result.error;
+      if (!id && result.data) href = "/admin/update-questions?test=" + result.data.id;
     } else if (action === "save-question") {
       const input = questionSchema.parse({
         test_id: text(form, "test_id"),
@@ -87,8 +89,8 @@ export async function adminAction(
       }
       const id = text(form, "id");
       const result = id
-        ? await db.from("questions").update(input).eq("id", positive.parse(id))
-        : await db.from("questions").insert(input);
+        ? await db.from("questions").update(input).eq("id", positive.parse(id)).eq("test_id", input.test_id).select("id").single()
+        : await db.from("questions").insert(input).select("id").single();
       error = result.error;
     } else if (action === "delete-question") {
       if (form.get("confirm") !== "on")
@@ -164,7 +166,9 @@ export async function adminAction(
           status: text(form, "status"),
           sort_order: text(form, "sort_order"),
         });
-      const result = await db.from("exams").upsert(input);
+      const result = form.get("existing") === "true"
+        ? await db.from("exams").update(input).eq("id", input.id).select("id").single()
+        : await db.from("exams").insert(input);
       error = result.error;
     } else if (action === "save-bundle") {
       const input = z
@@ -189,16 +193,24 @@ export async function adminAction(
         });
       const id = text(form, "id");
       const result = id
-        ? await db.from("bundles").update(input).eq("id", positive.parse(id))
+        ? await db.from("bundles").update(input).eq("id", positive.parse(id)).select("id").single()
         : await db.from("bundles").insert(input);
       error = result.error;
     } else if (action === "bundle-test") {
+      const bundleId = positive.parse(text(form, "bundle_id"));
+      const testId = positive.parse(text(form, "test_id"));
+      const [bundle, test] = await Promise.all([
+        db.from("bundles").select("exam_id").eq("id", bundleId).single(),
+        db.from("tests").select("exam_id").eq("id", testId).single(),
+      ]);
+      if (bundle.error || test.error) throw bundle.error || test.error;
+      if (bundle.data.exam_id !== test.data.exam_id) return { ok: false, message: "Choose a test from the same exam as this bundle." };
       const result = await db
         .from("bundle_tests")
         .upsert({
-          bundle_id: positive.parse(text(form, "bundle_id")),
-          test_id: positive.parse(text(form, "test_id")),
-        });
+          bundle_id: bundleId,
+          test_id: testId,
+        }, { onConflict: "bundle_id,test_id" });
       error = result.error;
     } else if (action === "remove-bundle-test") {
       const result = await db
@@ -211,9 +223,24 @@ export async function adminAction(
       return { ok: false, message: "Unknown admin action." };
     }
     if (error) throw error;
-    revalidatePath("/", "layout");
-    return { ok: true, message: "Saved successfully." };
+    revalidatePath("/admin", "layout");
+    revalidatePath("/dashboard", "layout");
+    if (!["assign-test", "assign-bundle", "revoke-test"].includes(action)) {
+      revalidatePath("/");
+      revalidatePath("/exams", "layout");
+      revalidatePath("/tests/[id]", "page");
+    }
+    const messages: Record<string, string> = {
+      "save-test": href ? "Draft created. Next, add your questions." : "Test updated.",
+      "save-question": text(form, "id") ? "Question updated." : "Question added. You can add the next one.",
+      "delete-question": "Question removed.", "assign-test": "Test access granted.",
+      "assign-bundle": "Bundle tests assigned.", "revoke-test": "Test access removed.",
+    };
+    return { ok: true, message: messages[action] || "Changes saved.", href };
   } catch (error) {
+    const code = error && typeof error === "object" && "code" in error ? error.code : null;
+    if (code === "23505") return { ok: false, message: "That ID or URL slug is already in use. Choose a unique one, or edit the existing record." };
+    if (code === "23503" || code === "PGRST116") return { ok: false, message: "This record is no longer available. Refresh the page and choose an existing record." };
     if (error instanceof z.ZodError)
       return {
         ok: false,

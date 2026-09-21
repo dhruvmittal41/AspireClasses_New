@@ -4,6 +4,8 @@ import { site } from "@/lib/site";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import "./responsive.css";
+import "./heritage.css";
+import "./workspace.css";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
